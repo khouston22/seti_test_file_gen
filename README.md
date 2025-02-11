@@ -5,7 +5,7 @@ The jupyter notebook "00_multichirp_raw_file_gen.ipynb" generates a RAW file wit
 
 Note: For 00_multichirp_raw_file_gen.ipynb, only a single array element (or beam) is generated for use in seticore dedoppler mode or in turbo seti. Currently, raw files with GBT, MeerKat or COSMIC parameters may be generated. After generating the raw file, rawspec is run and spectra are created for verification.
 
-A limited number of coarse channels are generated, typically 8.  As configured, the tones will appear in coarse channel 4, and are set up to span this channel from edge to edge.  For the multiple tones, drift rates are assigned from min to max corresponding to frequencies min to max.  The assigned center frequency of the coarse channels is unimportant as the signal generation assumes a baseband model.  Setigen creates multiple signals in noise, and passes these through a polyphase filter bank with an 8-bit quantizer for each I/Q stream applied to each coarse channel.
+A limited number of coarse channels are generated, typically 4 or 8.  As configured, the tones will appear one coarse channel, and are set up to span this channel from edge to edge.  For the multiple tones, drift rates are assigned from min to max corresponding to frequencies min to max.  The assigned center frequency of the coarse channels is unimportant as the signal generation assumes a baseband model.  Setigen creates multiple signals in noise, and passes these through a polyphase filter bank with an 8-bit quantizer for each I/Q stream applied to each coarse channel.
 
 Setup instructions appear in the jupyter files themselves.
 
