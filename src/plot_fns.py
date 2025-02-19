@@ -17,6 +17,7 @@ def db(x):
 
 def plot_generic(x_data,
         y_data,
+        fig = [],
         xy_markers = '-',
         xy_legend = '',
         x_limits=[],
@@ -33,7 +34,11 @@ def plot_generic(x_data,
     set x_data = x_data1, y_data = y_data1, xy_legend='' or 'legend_label1' for single curve
         x_data = [x_data1,x_data2...], y_data = [y_data1,y_data2,...] , xy_legend='' or ['legend_label1','legend_label2',...] for multiple curves
     """
-    fig = plt.figure(figsize=(10, 6))
+    if not fig:
+        fig = plt.figure(figsize=(10, 6))
+        this_is_subplot = False
+    else:
+        this_is_subplot = True
 
     if (type(x_data)==list):         # plot multiple curves
         n_curve = len(x_data)
@@ -74,6 +79,9 @@ def plot_generic(x_data,
     for ifig,ft in enumerate(fig_text_list):
         plt.figtext(ft[0],ft[1],ft[2])
     plt.grid()
+
+    if this_is_subplot:
+        return
 
     if len(savfig_name)>0:
         plt.savefig(savfig_name,bbox_inches='tight')
