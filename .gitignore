@@ -6,3 +6,5 @@ __pycache__
 perf.*
 *.qdrep
 *.qdstrm
+*.f32
+plots/

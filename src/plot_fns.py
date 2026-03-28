@@ -19,9 +19,12 @@ def plot_generic(x_data,
         y_data,
         fig = [],
         xy_markers = '-',
+        line_width = 1,
         xy_legend = '',
         x_limits=[],
         y_limits=[],
+        x_log = False,
+        y_log = False,
         x_label = '',
         y_label = '',
         fig_title='',
@@ -40,6 +43,15 @@ def plot_generic(x_data,
     else:
         this_is_subplot = True
 
+    if ((not x_log) & (not y_log)):
+        plot_fn = plt.plot
+    elif ((not x_log) & (y_log)):
+        plot_fn = plt.semilogy
+    elif ((x_log) & (not y_log)):
+        plot_fn = plt.semilogx
+    else:
+        plot_fn = plt.loglog
+    
     if (type(x_data)==list):         # plot multiple curves
         n_curve = len(x_data)
         #print(f'{n_curve = }')
@@ -49,22 +61,28 @@ def plot_generic(x_data,
         else:
             xy_markers = [xy_markers]*n_curve
         #print(f'{xy_markers = }')
+        if (type(line_width)==list):
+            if (len(line_width)==1):
+                line_width = line_width*n_curve
+        else:
+            line_width = [line_width]*n_curve
+        #print(f'{line_width = }')
 
         do_legend = (len(xy_legend)>0)
         #print(f'{do_legend = }, {xy_legend = }')
 
         for i_curve in range(n_curve):
             if do_legend:
-                plt.plot(x_data[i_curve],y_data[i_curve],xy_markers[i_curve],label=xy_legend[i_curve])
+                plot_fn(x_data[i_curve],y_data[i_curve],xy_markers[i_curve],linewidth=line_width[i_curve],label=xy_legend[i_curve])
                 plt.legend(loc=legend_loc)
             else:
-                plt.plot(x_data[i_curve],y_data[i_curve],xy_markers[i_curve])
+                plot_fn(x_data[i_curve],y_data[i_curve],xy_markers[i_curve],linewidth=line_width[i_curve])
     else: # plot a single curve
         if len(xy_legend)>0:
-            plt.plot(x_data,y_data,xy_markers,label=xy_legend)
+            plot_fn(x_data,y_data,xy_markers,linewidth=line_width,label=xy_legend)
             plt.legend(loc=legend_loc)
         else:
-            plt.plot(x_data,y_data,xy_markers)
+            plot_fn(x_data,y_data,xy_markerslinewidth=line_width)
     
     if len(fig_title)>0:
         plt.title(fig_title)
@@ -87,8 +105,7 @@ def plot_generic(x_data,
         plt.savefig(savfig_name,bbox_inches='tight')
     if display_fig:
         plt.show()
-    else:
-        plt.close(fig)
+    plt.close(fig)
     return
 
 

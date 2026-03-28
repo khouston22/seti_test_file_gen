@@ -108,8 +108,11 @@ def get_run_params(raw_file_stem,
     fs_coarse = 1/t_coarse
     fs_fine = 1/t_fine
 
+    fch1 = ctr_freq_MHz - abs(obs_bw_MHz)/2. + chan_bw/2.*1e-6
+    foff = fs_fine
+
     raw_file_stats = os.stat(raw_file_base_name)
-    raw_size_MB = raw_file_stats.st_size/1024/1024
+    raw_size_MB = raw_file_stats.st_size/1024./1024.
     n_blocks_base = (raw_file_stats.st_size-header_size)//block_size
     expected_file_size = n_antennas*n_pols*n_coarse_channels*n_coarse_samples*2/1024./1024.
 
@@ -126,15 +129,17 @@ def get_run_params(raw_file_stem,
     p['ctr_freq_MHz'] = ctr_freq_MHz
     p['obs_bw_MHz'] = obs_bw_MHz
     p['obs_bw_sign'] = obs_bw_sign
+    p['chan_bw'] = chan_bw
     p['f_min_MHz'] = f_min_MHz
     p['f_max_MHz'] =f_max_MHz
+    p['fch1'] = fch1
+    p['foff'] = foff
 
     p['t_obs'] = t_obs
     p['n_antennas'] = n_antennas
     p['n_coarse_channels'] = n_coarse_channels
     p['n_pols'] = n_pols
     p['n_bits'] = n_bits
-    p['chan_bw'] = chan_bw
     p['fs_coarse'] = fs_coarse
     p['fine_fft_size'] = fine_fft_size
     p['n_sti'] = n_sti
@@ -160,7 +165,7 @@ def get_run_params(raw_file_stem,
         print(f'{expected_file_size = } MB excl header')
 
         print(f'\n{telescop}, {time_string}, {mjd_day=}, {src_name}, {ra_deg = :.3f}, {dec_deg = :.3f}')
-        print(f'{ctr_freq_MHz = :.3f}, {obs_bw_MHz = }, {f_min_MHz = :.3f}, {f_max_MHz = :.3f}')
+        print(f'{ctr_freq_MHz = :.3f}, {obs_bw_MHz = }, {chan_bw = :.3f}, {f_min_MHz = :.3f}, {f_max_MHz = :.3f}')
 
         print(f'\n{t_obs = :.3f}, {n_antennas = }, {n_coarse_channels = }, {n_pols = }, {n_bits = }, {chan_bw = :.3f}')
         print(f'{fs_coarse = :.3f}, {fine_fft_size = }, {n_sti = }, {n_lti = }, {n_avg = }')
@@ -169,4 +174,4 @@ def get_run_params(raw_file_stem,
         print(f'{n_coarse_samples = }, {n_fine_samples = }')
         print(f'{samples_per_block = }, {n_blocks = }, {n_blocks_base = }, {block_size = }, {obs_time_per_block = :.3f}\n')
 
-    return p
+    return p, header
