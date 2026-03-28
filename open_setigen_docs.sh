@@ -1,0 +1,1 @@
+firefox $SETIGEN_PATH/docs/build/html/index.html &
